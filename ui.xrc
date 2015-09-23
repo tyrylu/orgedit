@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<resource class="main_frame.MainFrame(wxFrame)">
+  <object class="wxFrame" name="mainwindow" subclass="main_frame.MainFrame">
+    <object class="wxMenuBar">
+      <object class="wxMenu">
+        <object class="wxMenuItem" name="new">
+          <label>New</label>
+          <accel>ctrl+alt+n</accel>
+        </object>
+        <object class="wxMenuItem" name="open">
+          <label>Open...</label>
+          <accel>ctrl+o</accel>
+        </object>
+        <label>File</label>
+        <object class="wxMenuItem" name="save">
+          <label>Save</label>
+          <accel>ctrl+s</accel>
+        </object>
+        <object class="wxMenuItem" name="saveas">
+          <label>Save as...</label>
+          <accel>ctrl+shift+s</accel>
+        </object>
+        <object class="wxMenuItem" name="quit">
+          <label>Quit</label>
+          <accel>ctrl+q</accel>
+        </object>
+      </object>
+      <object class="wxMenu">
+        <label>Edit</label>
+        <object class="wxMenuItem" name="undo">
+          <label>Undo</label>
+          <accel>ctrl+z</accel>
+        </object>
+        <object class="wxMenuItem" name="cut">
+          <label>Cut</label>
+          <accel>ctrl+x</accel>
+        </object>
+        <object class="wxMenuItem" name="copy">
+          <label>Copy</label>
+          <accel>ctrl+c</accel>
+        </object>
+        <object class="wxMenuItem" name="paste">
+          <label>Paste</label>
+          <accel>ctrl+v</accel>
+        </object>
+        <object class="wxMenuItem" name="delete">
+          <label>Delete</label>
+          <accel>delete</accel>
+        </object>
+      </object>
+      <object_ref ref="node_menu">
+        <label>Node</label>
+      </object_ref>
+    </object>
+    <object class="wxPanel">
+      <object class="wxBoxSizer">
+        <object class="sizeritem">
+          <object class="wxTreeCtrl" name="tree">
+            <style>wxTR_HIDE_ROOT</style>
+          </object>
+        </object>
+        <object class="sizeritem">
+          <object class="wxTextCtrl" name="text">
+            <style>wxTE_MULTILINE|wxTE_RICH2|wxTE_DONTWRAP</style>
+          </object>
+        </object>
+      </object>
+    </object>
+    <size>1024,768</size>
+    <title>Org editor</title>
+  </object>
+  <object class="wxDialog" name="node_properties">
+    <object class="wxNotebook" name="">
+      <object class="notebookpage">
+        <object class="wxPanel">
+          <object class="wxGridSizer">
+            <rows>2</rows>
+            <cols>2</cols>
+            <object class="sizeritem">
+              <object class="wxStaticText">
+                <label>Current tags</label>
+              </object>
+            </object>
+            <object class="sizeritem">
+              <object class="wxListBox" name="tags"/>
+            </object>
+            <object class="sizeritem">
+              <object class="wxButton" name="removetag">
+                <label>Remove</label>
+              </object>
+            </object>
+            <object class="sizeritem">
+              <object class="wxButton" name="addtag">
+                <label>Add...</label>
+              </object>
+            </object>
+          </object>
+        </object>
+        <label>Tags</label>
+        <selected>1</selected>
+      </object>
+    </object>
+    <object class="wxStdDialogButtonSizer">
+      <object class="button">
+        <object class="wxButton" name="ok">
+          <label>OK</label>
+        </object>
+      </object>
+      <object class="button">
+        <object class="wxButton" name="cancel">
+          <label>Cancel</label>
+        </object>
+      </object>
+    </object>
+    <title>Node properties</title>
+  </object>
+  <object class="wxMenu" name="node_menu">
+    <object class="wxMenu">
+      <object class="wxMenuItem" name="addafter">
+        <label>Add after current</label>
+        <accel>ctrl+n</accel>
+      </object>
+      <object class="wxMenuItem" name="addchild">
+        <label>Add child</label>
+        <accel>ctrl+shift+n</accel>
+      </object>
+      <object class="wxMenuItem" name="addbefore">
+        <label>Add before current</label>
+        <accel>alt+n</accel>
+      </object>
+      <label>Add</label>
+    </object>
+    <object class="wxMenuItem" name="rename">
+      <label>Rename</label>
+      <accel>f2</accel>
+    </object>
+    <object class="wxMenuItem" name="remove">
+      <label>Remove</label>
+      <accel>ctrl+d</accel>
+    </object>
+    <object class="wxMenu">
+      <label>Move</label>
+      <object class="wxMenuItem" name="up">
+        <label>Up</label>
+        <accel>ctrl+alt+up</accel>
+        <enabled>0</enabled>
+      </object>
+      <object class="wxMenuItem" name="down">
+        <label>Down</label>
+        <accel>ctrl+alt+down</accel>
+        <enabled>0</enabled>
+      </object>
+      <object class="wxMenuItem" name="left">
+        <label>Left</label>
+        <accel>ctrl+alt+left</accel>
+        <enabled>0</enabled>
+      </object>
+      <object class="wxMenuItem" name="right">
+        <label>Right</label>
+        <accel>ctrl+alt+right</accel>
+        <enabled>0</enabled>
+      </object>
+    </object>
+    <object class="wxMenuItem" name="properties">
+      <label>Properties</label>
+      <accel>alt+enter</accel>
+    </object>
+  </object>
+</resource>
