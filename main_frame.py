@@ -88,6 +88,7 @@ class MainFrame(wx.Frame):
             tree_idx = index_fn(nodes.index(selected))
             new = tree.InsertItemBefore(tree.GetItemParent(si), tree_idx, heading)
             tree.SetItemPyData(new, node)
+            self.populate_branch(node, existing_item=new)
             tree.SetFocusedItem(new)
             tree.ToggleItemSelection(new)
             self.FindWindowByName("text").Clear()
@@ -108,6 +109,7 @@ class MainFrame(wx.Frame):
             selected.content.append(node)
             new = tree.AppendItem(si, heading)
             tree.SetItemPyData(new, node)
+            self.populate_branch(node, existing_item=new)
             tree.SetFocusedItem(new)
             tree.ToggleItemSelection(new)
             self.FindWindowByName("text").Clear()
@@ -141,8 +143,11 @@ class MainFrame(wx.Frame):
         el = node.parent.content
         el[idx], el[index_fn(idx)] = el[index_fn(idx)], el[idx]
         tree.Delete(si)
-        new = tree.InsertItemBefore(pi, index_fn(idx), node.heading.decode("UTF-8"))
+        nodes = [n for n in node.parent.content if isinstance(n, PyOrgMode.OrgNode.Element)]
+        tree_idx = index_fn(nodes.index(node))
+        new = tree.InsertItemBefore(pi, tree_idx, node.heading.decode("UTF-8"))
         tree.SetItemPyData(new, node)
+        self.populate_branch(node, existing_item=new)
         tree.SetFocusedItem(new)
         tree.ToggleItemSelection(new)
         self.file.modified = True
@@ -163,6 +168,7 @@ class MainFrame(wx.Frame):
         tree.Delete(si)
         new = tree.AppendItem(prev, node.heading.decode("UTF-8"))
         tree.SetItemPyData(new, node)
+        self.populate_branch(node, existing_item=new)
         tree.SetFocusedItem(new)
         tree.ToggleItemSelection(new)
         self.file.modified = True
@@ -178,9 +184,12 @@ class MainFrame(wx.Frame):
         node.level -= 1
         pi = tree.GetItemParent(tree.GetItemParent(si))
         tree.Delete(si)
-        new = tree.InsertItemBefore(pi, parent_idx + 1, node.heading.decode("UTF-8"))
+        nodes = [n for n in node.parent.parent.content if isinstance(n, PyOrgMode.OrgNode.Element)]
+        parent_tree_idx = nodes.index(node.parent)
+        new = tree.InsertItemBefore(pi, parent_tree_idx + 1, node.heading.decode("UTF-8"))
         tree.SetItemPyData(new, node)
         tree.SetFocusedItem(new)
+        self.populate_branch(node, existing_item=new)
         tree.ToggleItemSelection(new)
         self.file.modified = True
     
@@ -237,10 +246,13 @@ class MainFrame(wx.Frame):
 
     # Helpers
 
-    def populate_branch(self, node, parent):
+    def populate_branch(self, node, parent=None, existing_item=None):
         tree = self.tree
-        selfitem = tree.AppendItem(parent, (node.heading or _("<Unnamed node>")).decode("UTF-8"))
-        tree.SetItemPyData(selfitem, node)
+        if not existing_item:
+            selfitem = tree.AppendItem(parent, (node.heading or _("<Unnamed node>")).decode("UTF-8"))
+            tree.SetItemPyData(selfitem, node)
+        else:
+            selfitem = existing_item
         for c in node.content:
             if isinstance(c, PyOrgMode.OrgNode.Element): self.populate_branch(c, selfitem)
         if self.file.track_tree_state:
