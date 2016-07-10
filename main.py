@@ -13,9 +13,10 @@ else:
     import __builtin__ as builtins
 builtins.__dict__['_'] = locale.GetString
 
-import main_frame # We must import it here, else the wxpython subclass loader does not see the module
+import main_frame
 import uimanager
-mgr = uimanager.UIManager("ui.xrc", "mainwindow", reuse_app=True)
+frame = main_frame.MainFrame()
+mgr = uimanager.UIManager("ui.xrc", "mainwindow", reuse_app=True, load_on=frame)
 mgr.auto_bind(mgr.top_level, mgr.top_level, alternate_bind_of=["on_tree_tree_sel_changed"])
 mgr.top_level.Bind(wx.EVT_CLOSE, mgr.top_level.on_quit_selected) # Needed, window event binding is a third way of binding unsupported by UiManager
         

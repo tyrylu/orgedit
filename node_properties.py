@@ -5,7 +5,8 @@ import uimanager
 class NodeProperties(wx.Dialog):
     xrc_name = "node_properties"
 
-    def __init__(self): pass
+    def __init__(self):
+        super().__init__()
 
     def post_init(self, node):
         self.node = node

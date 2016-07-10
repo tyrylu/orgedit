@@ -749,7 +749,7 @@ class OrgDataStructure(OrgElement):
         current = self.root
         # Determine content type and put in appropriate form
         if form == "file":
-            content = open(name,'r')
+            content = open(name,'r', encoding="utf-8")
         elif form == "string":
             content = name.split("\n")
         else:
@@ -778,7 +778,7 @@ class OrgDataStructure(OrgElement):
         """
         Used to save an org-file corresponding to this DataStructure
         """
-        output = open(name,'w')
+        output = open(name,'w', encoding="utf-8")
         if node == None:
             node = self.root
         output.write(str(node))

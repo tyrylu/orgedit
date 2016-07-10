@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <resource class="main_frame.MainFrame(wxFrame)">
-  <object class="wxFrame" name="mainwindow" subclass="main_frame.MainFrame">
+  <object class="wxFrame" name="mainwindow">
     <object class="wxMenuBar">
       <object class="wxMenu">
         <object class="wxMenuItem" name="new">

@@ -8,7 +8,7 @@ def get():
     return uimgr
 
 class UIManager(object):
-    def __init__(self, resource_file, top_level_name, top_level_type="frame", reuse_app=False):
+    def __init__(self, resource_file, top_level_name, top_level_type="frame", reuse_app=False, load_on=None):
         global uimgr
         self._event_aliases = {}
         self.resource_name = resource_file
@@ -17,7 +17,7 @@ class UIManager(object):
         else:
             self.app = wx.GetApp()
         self.resource = xrc.XmlResource(resource_file)
-        self.top_level = getattr(self, "get_%s"%top_level_type)(top_level_name)
+        self.top_level = getattr(self, "get_%s"%top_level_type)(top_level_name, load_on)
         self.app.TopLevelWindow = self.top_level
         self.add_event_alias("button", "clicked")
         self.add_event_alias("menu", "selected")
@@ -25,12 +25,19 @@ class UIManager(object):
         self.current_dialog = None
         uimgr = self
 
-    def get_frame(self, name):
-        return self.resource.LoadFrame(getattr(self, "top_level", None), name)
+    def get_frame(self, name, load_on=None):
+        if load_on:
+            self.resource.LoadFrame(load_on, getattr(self, "top_level", None), name)
+            return load_on
+        else:
+            return self.resource.LoadFrame(getattr(self, "top_level", None), name)
 
-    def get_dialog(self, name):
-        return self.resource.LoadDialog(self.usable_parent, name)
-
+    def get_dialog(self, name, load_on=None):
+        if load_on:
+            self.resource.LoadDialog(load_on, self.usable_parent, name)
+            return load_on
+        else:
+            return self.resource.LoadDialog(self.usable_parent, name)
     def auto_bind(self, parent, eventsobj, only=[], alternate_bind_of=[]):
         if eventsobj is None: return
         handlers = [name for name in dir(eventsobj) if name.startswith("on_")]

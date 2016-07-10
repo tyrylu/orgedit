@@ -11,11 +11,7 @@ wildcard = _("ORG files (*.org)|*.org")
 
 class MainFrame(wx.Frame):
     def __init__(self):
-        if int(sys.version[0]) < 3:
-            p = wx.PreFrame()
-            self.PostCreate(p)
-        else:
-            super().__init__()
+        super().__init__() # It works, somehow there...
         self.file = None
         self.prev_node = None
 
@@ -25,8 +21,8 @@ class MainFrame(wx.Frame):
         if self.prev_node and txt.IsModified():
             orgutils.set_org_text(self.prev_node, txt.Value)
             self.file.modified = True
-        node = self.FindWindowByName("tree").GetItemPyData(item)
-        lines = [i.decode("UTF-8") for i in node.content if isinstance(i, str)]
+        node = self.FindWindowByName("tree").GetItemData(item)
+        lines = [i for i in node.content if isinstance(i, str)]
         text = "".join(lines).strip() # The newlines are in the input already
         txt.Value = text
         self.prev_node = node
@@ -47,16 +43,16 @@ class MainFrame(wx.Frame):
 
     
     def on_open_selected(self, evt):
-        path = wx.FileSelector(_("Select file"), wildcard=wildcard, flags=wx.OPEN|wx.FD_FILE_MUST_EXIST, parent=self)
+        path = wx.FileSelector(_("Select file"), wildcard=wildcard, flags=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST, parent=self)
         if path:
             self.open_file(path)
     
     def on_saveas_selected(self, evt, set_name=False):
-        path = wx.FileSelector(_("Select file"), wildcard=wildcard, flags=wx.SAVE, parent=self)
+        path = wx.FileSelector(_("Select file"), wildcard=wildcard, flags=wx.FD_SAVE, parent=self)
         if path:
             self.update_current_node_text()
             if self.file.track_tree_state: # Update the selected item before saving if needed
-                node = self.tree.GetItemPyData(self.tree.Selection)
+                node = self.tree.GetItemData(self.tree.Selection)
                 self.file.selected_item = orgutils.get_node_path(node)
             orgutils.save_file(self.file, path)
             if set_name:
@@ -67,7 +63,7 @@ class MainFrame(wx.Frame):
         if self.file.modified:
             if self.file_name:
                 if self.file.track_tree_state: # Update the selected item before saving if needed
-                    node = self.tree.GetItemPyData(self.tree.Selection)
+                    node = self.tree.GetItemData(self.tree.Selection)
                     self.file.selected_item = orgutils.get_node_path(node)
                 orgutils.save_file(self.file, self.file_name)
                 self.file.modified = False
@@ -79,15 +75,15 @@ class MainFrame(wx.Frame):
         if node:
             tree = self.FindWindowByName("tree")
             si = tree.Selection
-            selected = tree.GetItemPyData(si)
+            selected = tree.GetItemData(si)
             this_idx = index_fn(selected.parent.content.index(selected))
             node.parent = selected.parent
             node.level = selected.level
             selected.parent.content.insert(this_idx, node)
             nodes = [n for n in selected.parent.content if isinstance(n, PyOrgMode.OrgNode.Element)]
             tree_idx = index_fn(nodes.index(selected))
-            new = tree.InsertItemBefore(tree.GetItemParent(si), tree_idx, heading)
-            tree.SetItemPyData(new, node)
+            new = tree.InsertItem(tree.GetItemParent(si), tree_idx, heading)
+            tree.SetItemData(new, node)
             self.populate_branch(node, existing_item=new)
             tree.SetFocusedItem(new)
             tree.ToggleItemSelection(new)
@@ -103,12 +99,12 @@ class MainFrame(wx.Frame):
         if node:
             tree = self.FindWindowByName("tree")
             si = tree.Selection
-            selected = tree.GetItemPyData(si)
+            selected = tree.GetItemData(si)
             node.parent = selected
             node.level = selected.level + 1
             selected.content.append(node)
             new = tree.AppendItem(si, heading)
-            tree.SetItemPyData(new, node)
+            tree.SetItemData(new, node)
             self.populate_branch(node, existing_item=new)
             tree.SetFocusedItem(new)
             tree.ToggleItemSelection(new)
@@ -121,14 +117,14 @@ class MainFrame(wx.Frame):
         new_name = wx.GetTextFromUser(_("Enter a title for the node"), _("Node title"), default_value=tree.GetItemText(si), parent=self)
         if new_name:
             tree.SetItemText(si, new_name)
-            tree.GetItemPyData(si).heading = new_name.encode("UTF-8")
+            tree.GetItemData(si).heading = new_name.encode("UTF-8")
             self.file.modified = True
     
     def on_remove_selected(self, evt):
         if wx.MessageBox(_("Do you really want to remove the node?"), _("Confirm"), style=wx.YES_NO|wx.ICON_QUESTION|wx.NO_DEFAULT, parent=self) == wx.YES:
             tree = self.FindWindowByName("tree")
             si = tree.Selection
-            node = tree.GetItemPyData(si)
+            node = tree.GetItemData(si)
             tree.Delete(si)
             node.parent.content.remove(node)
             self.file.modified = True
@@ -138,15 +134,15 @@ class MainFrame(wx.Frame):
         tree = self.FindWindowByName("tree")
         si = tree.Selection
         pi = tree.GetItemParent(si)
-        node = tree.GetItemPyData(si)
+        node = tree.GetItemData(si)
         idx = node.parent.content.index(node)
         el = node.parent.content
         el[idx], el[index_fn(idx)] = el[index_fn(idx)], el[idx]
         tree.Delete(si)
         nodes = [n for n in node.parent.content if isinstance(n, PyOrgMode.OrgNode.Element)]
         tree_idx = index_fn(nodes.index(node))
-        new = tree.InsertItemBefore(pi, tree_idx, node.heading.decode("UTF-8"))
-        tree.SetItemPyData(new, node)
+        new = tree.InsertItem(pi, tree_idx, node.heading.decode("UTF-8"))
+        tree.SetItemData(new, node)
         self.populate_branch(node, existing_item=new)
         tree.SetFocusedItem(new)
         tree.ToggleItemSelection(new)
@@ -159,7 +155,7 @@ class MainFrame(wx.Frame):
         tree = self.FindWindowByName("tree")
         si = tree.Selection
         prev = tree.GetPrevSibling(si)
-        node = tree.GetItemPyData(si)
+        node = tree.GetItemData(si)
         idx = node.parent.content.index(node)
         node.parent.content.remove(node)
         node.parent.content[idx - 1].content.append(node)
@@ -167,7 +163,7 @@ class MainFrame(wx.Frame):
         node.level += 1
         tree.Delete(si)
         new = tree.AppendItem(prev, node.heading.decode("UTF-8"))
-        tree.SetItemPyData(new, node)
+        tree.SetItemData(new, node)
         self.populate_branch(node, existing_item=new)
         tree.SetFocusedItem(new)
         tree.ToggleItemSelection(new)
@@ -176,7 +172,7 @@ class MainFrame(wx.Frame):
     def on_left_selected(self, evt):
         tree = self.FindWindowByName("tree")
         si = tree.Selection
-        node = tree.GetItemPyData(si)
+        node = tree.GetItemData(si)
         parent_idx = node.parent.parent.content.index(node.parent)
         node.parent.content.remove(node)
         node.parent.parent.content.insert(parent_idx + 1, node)
@@ -186,8 +182,8 @@ class MainFrame(wx.Frame):
         tree.Delete(si)
         nodes = [n for n in node.parent.parent.content if isinstance(n, PyOrgMode.OrgNode.Element)]
         parent_tree_idx = nodes.index(node.parent)
-        new = tree.InsertItemBefore(pi, parent_tree_idx + 1, node.heading.decode("UTF-8"))
-        tree.SetItemPyData(new, node)
+        new = tree.InsertItem(pi, parent_tree_idx + 1, node.heading.decode("UTF-8"))
+        tree.SetItemData(new, node)
         tree.SetFocusedItem(new)
         self.populate_branch(node, existing_item=new)
         tree.ToggleItemSelection(new)
@@ -225,7 +221,7 @@ class MainFrame(wx.Frame):
         self.FindWindowByName("text").Delete()
 
     def on_properties_selected(self, evt):
-        dlg = uimanager.get().prepare_xrc_dialog(node_properties.NodeProperties, node=self.tree.GetItemPyData(self.tree.Selection))
+        dlg = uimanager.get().prepare_xrc_dialog(node_properties.NodeProperties, node=self.tree.GetItemData(self.tree.Selection))
         dlg.AffirmativeId = xrc.XRCID("ok")
         dlg.EscapeId = xrc.XRCID("cancel")
         dlg.ShowModal()
@@ -238,19 +234,19 @@ class MainFrame(wx.Frame):
 
     def on_tree_tree_item_expanded(self, evt):
         if self.file.track_tree_state:
-            orgutils.set_node_property(self.tree.GetItemPyData(evt.Item), "expanded", "True")
+            orgutils.set_node_property(self.tree.GetItemData(evt.Item), "expanded", "True")
 
     def on_tree_tree_item_collapsed(self, evt):
         if self.file.track_tree_state:
-            orgutils.delete_node_property(self.tree.GetItemPyData(evt.Item), "expanded")
+            orgutils.delete_node_property(self.tree.GetItemData(evt.Item), "expanded")
 
     # Helpers
 
     def populate_branch(self, node, parent=None, existing_item=None):
         tree = self.tree
         if not existing_item:
-            selfitem = tree.AppendItem(parent, (node.heading or _("<Unnamed node>")).decode("UTF-8"))
-            tree.SetItemPyData(selfitem, node)
+            selfitem = tree.AppendItem(parent, (node.heading or _("<Unnamed node>")))
+            tree.SetItemData(selfitem, node)
         else:
             selfitem = existing_item
         for c in node.content:
@@ -295,7 +291,7 @@ class MainFrame(wx.Frame):
         self.tree.DeleteAllItems()
         self.file = PyOrgMode.OrgDataStructure()
         self.file_name = None
-        self.file.load_from_string("* " + _("First node").encode("UTF-8"))
+        self.file.load_from_string("* " + _("First node"))
         self.file.modified = False
         self.file.track_times = False
         self.file.track_tree_state = False
@@ -306,10 +302,10 @@ class MainFrame(wx.Frame):
         tree = self.tree
         txt = self.FindWindowByName("text")
         if txt.IsModified(): # Persist current changes
-            orgutils.set_org_text(tree.GetItemPyData(tree.Selection), txt.Value)
+            orgutils.set_org_text(tree.GetItemData(tree.Selection), txt.Value)
             self.file.modified = True    
             if self.file.track_times:
-                orgutils.set_node_property(tree.GetItemPyData(tree.Selection), "modified", orgutils.current_time())
+                orgutils.set_node_property(tree.GetItemData(tree.Selection), "modified", orgutils.current_time())
 
     def create_node(self):		
         name = wx.GetTextFromUser(_("Enter a name for the new node"), _("Node title"), parent=self)
