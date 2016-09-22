@@ -81,3 +81,4 @@ def save_file(file, path):
     file.save_to_file(path)
     if flags:
         del file.root.content[0] # We don't need them there
+    file.modified = False

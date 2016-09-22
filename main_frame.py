@@ -117,7 +117,7 @@ class MainFrame(wx.Frame):
         new_name = wx.GetTextFromUser(_("Enter a title for the node"), _("Node title"), default_value=tree.GetItemText(si), parent=self)
         if new_name:
             tree.SetItemText(si, new_name)
-            tree.GetItemData(si).heading = new_name.encode("UTF-8")
+            tree.GetItemData(si).heading = new_name
             self.file.modified = True
     
     def on_remove_selected(self, evt):
@@ -311,7 +311,7 @@ class MainFrame(wx.Frame):
         name = wx.GetTextFromUser(_("Enter a name for the new node"), _("Node title"), parent=self)
         if name:
             node = PyOrgMode.OrgNode.Element()
-            node.heading = name.encode("UTF-8") # Needed, the library expects strs/does not care but does a + on the strings
+            node.heading = name
             if self.file.track_times:
                 orgutils.set_node_property(node, "created", orgutils.current_time())
             return node, name

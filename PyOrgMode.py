@@ -567,7 +567,7 @@ class OrgNode(OrgPlugin):
                 output = output + "\n"
     
             for element in self.content:
-                output = output + element.__str__()
+                output = output + element.__str__() + "\n"
             return output
         def append_clean(self,element):
             if isinstance(element,list):
@@ -781,6 +781,7 @@ class OrgDataStructure(OrgElement):
         output = open(name,'w', encoding="utf-8")
         if node == None:
             node = self.root
+        print(node.content[0].content)
         output.write(str(node))
         output.close()
 
