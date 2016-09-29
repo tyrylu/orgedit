@@ -2,7 +2,7 @@ import time
 import PyOrgMode
 
 def set_org_text(node, text):
-    text_lst = text.split("\n")
+    text_lst = [item + "\n" for item in text.split("\n")]
     others = [el for el in node.content if not isinstance(el, str)]
     text_lst.extend(others)
     node.content = text_lst

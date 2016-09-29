@@ -567,7 +567,7 @@ class OrgNode(OrgPlugin):
                 output = output + "\n"
     
             for element in self.content:
-                output = output + element.__str__() + "\n"
+                output = output + element.__str__()
             return output
         def append_clean(self,element):
             if isinstance(element,list):
