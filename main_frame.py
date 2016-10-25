@@ -277,6 +277,7 @@ class MainFrame(wx.Frame):
             self.file.track_times = False
             self.file.track_tree_state = False
             self.file.selected_item = None
+            self.file.password = None # Note that something like .net's SecureString would be nice, but there is no cross platform way, or atleast none i am aware of.
         self.populate_tree(self.file)
         if self.file.selected_item:
             last = self.get_item_by_path(self.file.selected_item)

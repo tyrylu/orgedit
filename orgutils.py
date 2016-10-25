@@ -61,10 +61,13 @@ def set_file_flags_on(file, flags):
             file.track_tree_state = True
         elif flag.startswith("selected_item="):
             file.selected_item = flag.split("=")[1]
+    elif flag == "org_encrypted":
+        file.password = "something" # We'll ask anyway
     # Now the defaults
     if not hasattr(file, "track_times"): file.track_times = False
     if not hasattr(file, "track_tree_state"): file.track_tree_state = False
     if not hasattr(file, "selected_item"): file.selected_item = None
+    if not hasattr(file, "password"): file.password = None
     return file
 
 def save_file(file, path):
