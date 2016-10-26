@@ -337,6 +337,7 @@ class MainFrame(wx.Frame):
         if txt.IsModified(): # Persist current changes
             orgutils.set_org_text(tree.GetItemData(tree.Selection), txt.Value)
             self.file.modified = True    
+            txt.SetModified(False)
             if self.file.track_times:
                 orgutils.set_node_property(tree.GetItemData(tree.Selection), "modified", orgutils.current_time())
 
