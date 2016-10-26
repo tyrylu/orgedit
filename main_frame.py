@@ -19,6 +19,9 @@ class MainFrame(wx.Frame):
     def on_tree_tree_sel_changed(self, evt):
         item = evt.Item
         txt = self.FindWindowByName("text")
+        if not txt:
+            print("Failed to get the text control?")
+            return
         if self.prev_node and txt.IsModified():
             orgutils.set_org_text(self.prev_node, txt.Value)
             self.file.modified = True
@@ -141,8 +144,9 @@ class MainFrame(wx.Frame):
         el[idx], el[index_fn(idx)] = el[index_fn(idx)], el[idx]
         tree.Delete(si)
         nodes = [n for n in node.parent.content if isinstance(n, PyOrgMode.OrgNode.Element)]
-        tree_idx = index_fn(nodes.index(node))
-        new = tree.InsertItem(pi, tree_idx, node.heading.decode("UTF-8"))
+        tree_idx = nodes.index(node)
+        print(tree_idx)
+        new = tree.InsertItem(pi, tree_idx, node.heading)
         tree.SetItemData(new, node)
         self.populate_branch(node, existing_item=new)
         tree.SetFocusedItem(new)
@@ -163,7 +167,7 @@ class MainFrame(wx.Frame):
         node.parent = node.parent.content[idx - 1]
         node.level += 1
         tree.Delete(si)
-        new = tree.AppendItem(prev, node.heading.decode("UTF-8"))
+        new = tree.AppendItem(prev, node.heading)
         tree.SetItemData(new, node)
         self.populate_branch(node, existing_item=new)
         tree.SetFocusedItem(new)
@@ -179,11 +183,11 @@ class MainFrame(wx.Frame):
         node.parent.parent.content.insert(parent_idx + 1, node)
         node.parent = node.parent.parent
         node.level -= 1
-        pi = tree.GetItemParent(tree.GetItemParent(si))
+        destination_parent = tree.GetItemParent(tree.GetItemParent(si))
         tree.Delete(si)
-        nodes = [n for n in node.parent.parent.content if isinstance(n, PyOrgMode.OrgNode.Element)]
-        parent_tree_idx = nodes.index(node.parent)
-        new = tree.InsertItem(pi, parent_tree_idx + 1, node.heading.decode("UTF-8"))
+        nodes = [n for n in node.parent.content if isinstance(n, PyOrgMode.OrgNode.Element)]
+        parent_tree_idx = nodes.index(node)
+        new = tree.InsertItem(destination_parent, parent_tree_idx, node.heading)
         tree.SetItemData(new, node)
         tree.SetFocusedItem(new)
         self.populate_branch(node, existing_item=new)
