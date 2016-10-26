@@ -8,13 +8,19 @@ Emacs can be configured to talk nicely under Linux, but under Windows, the situa
 
 Goals
 -----
-This project is there to provide a feature rich note taking application, taking accessibility into accord.
-Thus, it will try to implement as many useful features as possible.
+This project is there to provide a feature rich note taking application, taking accessibility into accunt.
+Thus, it will try to implement as many useful features as possible. Of course, .it will take some time.
 
 System requirements
 ------------
-The program requires WxPython 3.x (not tested with older releases). In theory, it should work under Wxpython Phoenix under Python 3, but unfortunately, under Windows at least, it throws an access violation after start. Thus, Python 2.x is now required, apologies.
+The program requires Python 3.x (tested under 3.5) and Wxpython Phoenix.
+And it also requires pysodium, which can be installing using pip, but note that pysodium requires the libsodium library to be somewhere on path.
 
-Getting it and using
+Getting it
 ----------
-Just clone the repository, or download a archive and run main.py.
+Just clone the repository, or download an archive.
+
+Usage
+-----
+It is really simple, just run main.py and enjoy.
+You can pass the org file as an argument, so you should be able to create a system file type association, if you would like.

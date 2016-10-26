@@ -5,202 +5,239 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-09-23 19:27+0200\n"
-"PO-Revision-Date: 2015-09-23 19:47+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-26 21:12+0200\n"
+"PO-Revision-Date: 2016-10-26 21:25+0200\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Generator: Poedit 1.8.4\n"
-"Last-Translator: \n"
+"X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"Language: cs\n"
 
-#: main_frame.py:10
+#: main_frame.py:11
 msgid "ORG files (*.org)|*.org"
 msgstr "ORG soubory (*.org)|*.org"
 
-#: main_frame.py:50 main_frame.py:55
+#: main_frame.py:47 main_frame.py:52
 msgid "Select file"
 msgstr "Vybrat soubor"
 
-#: main_frame.py:119
+#: main_frame.py:118
 msgid "Enter a title for the node"
 msgstr "Zadejte název uzlu"
 
-#: main_frame.py:119 main_frame.py:301
+#: main_frame.py:118 main_frame.py:344
 msgid "Node title"
 msgstr "Titulek uzlu"
 
-#: main_frame.py:126
+#: main_frame.py:125
 msgid "Do you really want to remove the node?"
 msgstr "Opravdu chcete odstranit tento uzel?"
 
-#: main_frame.py:126 node_properties.py:17
+#: main_frame.py:125 node_properties.py:18
 msgid "Confirm"
 msgstr "Potvrdit"
 
-#: main_frame.py:240
-msgid "<Unnamed node>"
-msgstr "<Nepojmenovaný uzel>"
+#: main_frame.py:231
+msgid "Enter the encryption password"
+msgstr "Zadejte šifrovací heslo"
 
-#: main_frame.py:284
-msgid "First node"
-msgstr "První uzel"
+#: main_frame.py:231 main_frame.py:240 main_frame.py:302
+msgid "Password required"
+msgstr "Vyžadováno heslo"
 
-#: main_frame.py:301
-msgid "Enter a name for the new node"
-msgstr "Zadejte název nového uzlu"
+#: main_frame.py:234
+msgid "Do you really want to decrypt the file?"
+msgstr "Opravdu chcete dešifrovat tento soubor?"
 
-#: main_frame.py:313
+#: main_frame.py:234 main_frame.py:356
 msgid "Question"
 msgstr "Dotaz"
 
-#: main_frame.py:313
+#: main_frame.py:240
+msgid "Enter the same password again"
+msgstr "Vložte znovu stejné heslo"
+
+#: main_frame.py:243
+msgid "Provided passwords do not match, try again."
+msgstr "Zadaná hesla nejsou stejná, zkuste to znovu."
+
+#: main_frame.py:243 main_frame.py:311
+msgid "Error"
+msgstr "Chyba"
+
+#: main_frame.py:266
+msgid "<Unnamed node>"
+msgstr "<Nepojmenovaný uzel>"
+
+#: main_frame.py:302
+msgid "Enter the password used to encrypt the file"
+msgstr "Zadejhte heslo, které bylo použito při zašifrování souboru"
+
+#: main_frame.py:311
+msgid "The provided password is invalid."
+msgstr "Zadané heslo není správné."
+
+#: main_frame.py:326
+msgid "First node"
+msgstr "První uzel"
+
+#: main_frame.py:344
+msgid "Enter a name for the new node"
+msgstr "Zadejte název nového uzlu"
+
+#: main_frame.py:356
 msgid "Save the changes in this file?"
 msgstr "Uložit změny v tomto souboru?"
 
-#: main_frame.py:314
-msgid "Don't save"
-msgstr "Neukládat"
-
-#: main_frame.py:314 xrc_strings.py:4
+#: main_frame.py:357 ui_strings.py:4
 msgid "Save"
 msgstr "Uložit"
 
-#: main_frame.py:314 xrc_strings.py:20
+#: main_frame.py:357
+msgid "Don't save"
+msgstr "Neukládat"
+
+#: main_frame.py:357 ui_strings.py:20
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: node_properties.py:17
+#: node_properties.py:18
 msgid "Do you really want to remove the tag?"
 msgstr "Opravdu chcete tento štítek odstranit?"
 
-#: node_properties.py:24
-msgid "Enter the tag name"
-msgstr "Zadejte jméno štítku"
-
-#: node_properties.py:24
+#: node_properties.py:25
 msgid "Tag name"
 msgstr "Jméno štítku"
 
-#: xrc_strings.py:1
+#: node_properties.py:25
+msgid "Enter the tag name"
+msgstr "Zadejte jméno štítku"
+
+#: ui_strings.py:1
 msgid "New"
 msgstr "Nový"
 
-#: xrc_strings.py:2
+#: ui_strings.py:2
 msgid "Open..."
 msgstr "&Otevřít..."
 
-#: xrc_strings.py:3
+#: ui_strings.py:3
 msgid "File"
 msgstr "Soubor"
 
-#: xrc_strings.py:5
+#: ui_strings.py:5
 msgid "Save as..."
 msgstr "Uložit jako..."
 
-#: xrc_strings.py:6
+#: ui_strings.py:6
+msgid "Encrypt file..."
+msgstr "Zašifrovat soubor..."
+
+#: ui_strings.py:7
 msgid "Quit"
 msgstr "&Ukončit"
 
-#: xrc_strings.py:7
+#: ui_strings.py:8
 msgid "Edit"
 msgstr "Upravit"
 
-#: xrc_strings.py:8
+#: ui_strings.py:9
 msgid "Undo"
 msgstr "&Zpět"
 
-#: xrc_strings.py:9
+#: ui_strings.py:10
 msgid "Cut"
 msgstr "&Vyjmout"
 
-#: xrc_strings.py:10
+#: ui_strings.py:11
 msgid "Copy"
 msgstr "&Kopírovat"
 
-#: xrc_strings.py:11
+#: ui_strings.py:12
 msgid "Paste"
 msgstr "V&ložit"
 
-#: xrc_strings.py:12
+#: ui_strings.py:13
 msgid "Delete"
 msgstr "&Smazat"
 
-#: xrc_strings.py:13
+#: ui_strings.py:14
 msgid "Node"
 msgstr "Uzel"
 
-#: xrc_strings.py:14
-msgid "Org editor"
-msgstr "Org editor"
-
-#: xrc_strings.py:15
+#: ui_strings.py:15
 msgid "Current tags"
 msgstr "Aktuální štítky"
 
-#: xrc_strings.py:16 xrc_strings.py:27
+#: ui_strings.py:16 ui_strings.py:26
 msgid "Remove"
 msgstr "Odstranit"
 
-#: xrc_strings.py:17
+#: ui_strings.py:17
 msgid "Add..."
 msgstr "Přidat..."
 
-#: xrc_strings.py:18
+#: ui_strings.py:18
 msgid "Tags"
 msgstr "Štítky"
 
-#: xrc_strings.py:19
+#: ui_strings.py:19
 msgid "OK"
 msgstr "OK"
 
-#: xrc_strings.py:21
-msgid "Node properties"
-msgstr "Vlastnosti uzlu"
-
-#: xrc_strings.py:22
+#: ui_strings.py:21
 msgid "Add after current"
 msgstr "Přidat za aktuálním"
 
-#: xrc_strings.py:23
+#: ui_strings.py:22
 msgid "Add child"
 msgstr "Přidat potomka"
 
-#: xrc_strings.py:24
+#: ui_strings.py:23
 msgid "Add before current"
 msgstr "Přidat před aktuálním"
 
-#: xrc_strings.py:25
+#: ui_strings.py:24
 msgid "Add"
 msgstr "Přidat"
 
-#: xrc_strings.py:26
+#: ui_strings.py:25
 msgid "Rename"
 msgstr "Přejmenovat"
 
-#: xrc_strings.py:28
+#: ui_strings.py:27
 msgid "Move"
 msgstr "Přesunout"
 
-#: xrc_strings.py:29
+#: ui_strings.py:28
 msgid "Up"
 msgstr "Nahoru"
 
-#: xrc_strings.py:30
+#: ui_strings.py:29
 msgid "Down"
 msgstr "Dolů"
 
-#: xrc_strings.py:31
+#: ui_strings.py:30
 msgid "Left"
 msgstr "Do leva"
 
-#: xrc_strings.py:32
+#: ui_strings.py:31
 msgid "Right"
 msgstr "Do prava"
 
-#: xrc_strings.py:33
+#: ui_strings.py:32
 msgid "Properties"
 msgstr "Vlastnosti"
+
+#: ui_strings.py:33
+msgid "Org editor"
+msgstr "Org editor"
+
+#: ui_strings.py:34
+msgid "Node properties"
+msgstr "Vlastnosti uzlu"

@@ -756,6 +756,7 @@ class OrgDataStructure(OrgElement):
             raise ValueError("Form \""+form+"\" not recognized")
 
         for line in content:
+            if not line.endswith("\n"): line += "\n" # The file iteration includes them, the string iteration not, which then can break havoc
             for plugin in self.plugins:
                 current = plugin.treat(current,line)
                 if plugin.treated: # Plugin found something

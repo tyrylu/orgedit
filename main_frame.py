@@ -23,8 +23,8 @@ class MainFrame(wx.Frame):
             orgutils.set_org_text(self.prev_node, txt.Value)
             self.file.modified = True
         node = self.FindWindowByName("tree").GetItemData(item)
-        lines = [i.strip("\n") for i in node.content if isinstance(i, str)] # May or may not be there
-        text = "\n".join(lines)
+        lines = [i for i in node.content if isinstance(i, str)] # It ends with a new line anyway, see the modification in PyOrgMode.py.
+        text = "".join(lines)
         txt.Value = text
         self.prev_node = node
         rid = xrc.XRCID("remove")
@@ -231,8 +231,10 @@ class MainFrame(wx.Frame):
         pass1 = wx.GetPasswordFromUser(_("Enter the encryption password"), _("Password required"))
         if not pass1: # Either unencrypt or cancel
             if self.file.password:
-                if wx.MessageBox(_("Do you really want to decrypt the file?"), _("Question"), style=wx.ICON_QUESTION) == wx.ID_YES:
+                if wx.MessageBox(_("Do you really want to decrypt the file?"), _("Question"), style=wx.YES_NO|wx.ICON_QUESTION) == wx.YES:
                     self.file.password = None
+                    self.file.modified = True
+                return # Ignoring the question, it's end of the querying for now.
             else:
                 return
         pass2 = wx.GetPasswordFromUser(_("Enter the same password again"), _("Password required"))
@@ -241,6 +243,7 @@ class MainFrame(wx.Frame):
             wx.MessageBox(_("Provided passwords do not match, try again."), _("Error"), icon=wx.ICON_ERROR)
         else:
             self.file.password = pass1
+            self.file.modified = True
     def on_tree_tree_item_activated(self, evt): self.on_properties_selected(evt)
 
     def on_tree_tree_item_menu(self, evt):
