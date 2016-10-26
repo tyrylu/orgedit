@@ -20,7 +20,11 @@
           <label>Save as...</label>
           <accel>ctrl+shift+s</accel>
         </object>
-        <object class="wxMenuItem" name="quit">
+        <object class="wxMenuItem" name="encrypt">
+                  <label>Encrypt file...</label>
+                  <accel>ctrl+e</accel>
+                </object>
+                <object class="wxMenuItem" name="quit">
           <label>Quit</label>
           <accel>ctrl+q</accel>
         </object>

@@ -781,7 +781,6 @@ class OrgDataStructure(OrgElement):
         output = open(name,'w', encoding="utf-8")
         if node == None:
             node = self.root
-        print(node.content[0].content)
         output.write(str(node))
         output.close()
 

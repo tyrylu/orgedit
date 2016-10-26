@@ -6,6 +6,7 @@ import PyOrgMode
 import uimanager
 import node_properties
 import orgutils
+import sodium_utils
 
 wildcard = _("ORG files (*.org)|*.org")
 
@@ -22,8 +23,8 @@ class MainFrame(wx.Frame):
             orgutils.set_org_text(self.prev_node, txt.Value)
             self.file.modified = True
         node = self.FindWindowByName("tree").GetItemData(item)
-        lines = [i for i in node.content if isinstance(i, str)]
-        text = "".join(lines).strip() # The newlines are in the input already
+        lines = [i.strip("\n") for i in node.content if isinstance(i, str)] # May or may not be there
+        text = "\n".join(lines)
         txt.Value = text
         self.prev_node = node
         rid = xrc.XRCID("remove")
@@ -226,6 +227,20 @@ class MainFrame(wx.Frame):
         dlg.EscapeId = xrc.XRCID("cancel")
         dlg.ShowModal()
 
+    def on_encrypt_selected(self, evt):
+        pass1 = wx.GetPasswordFromUser(_("Enter the encryption password"), _("Password required"))
+        if not pass1: # Either unencrypt or cancel
+            if self.file.password:
+                if wx.MessageBox(_("Do you really want to decrypt the file?"), _("Question"), style=wx.ICON_QUESTION) == wx.ID_YES:
+                    self.file.password = None
+            else:
+                return
+        pass2 = wx.GetPasswordFromUser(_("Enter the same password again"), _("Password required"))
+        if not pass2: return
+        if pass1 != pass2:
+            wx.MessageBox(_("Provided passwords do not match, try again."), _("Error"), icon=wx.ICON_ERROR)
+        else:
+            self.file.password = pass1
     def on_tree_tree_item_activated(self, evt): self.on_properties_selected(evt)
 
     def on_tree_tree_item_menu(self, evt):
@@ -278,6 +293,19 @@ class MainFrame(wx.Frame):
             self.file.track_tree_state = False
             self.file.selected_item = None
             self.file.password = None # Note that something like .net's SecureString would be nice, but there is no cross platform way, or atleast none i am aware of.
+        if self.file.password: # Encrypted
+            has_password = False
+            while not has_password:
+                password = wx.GetPasswordFromUser(_("Enter the password used to encrypt the file"), _("Password required"))
+                if not password: return
+                try:
+                    data = sodium_utils.decrypt(self.file.root.content[0], password)
+                    self.file.password = password
+                    self.file.root.content = []
+                    self.file.load_from_string(data)
+                    has_password = True
+                except ValueError:
+                    wx.MessageBox(_("The provided password is invalid."), _("Error"), style=wx.ICON_ERROR)
         self.populate_tree(self.file)
         if self.file.selected_item:
             last = self.get_item_by_path(self.file.selected_item)
@@ -297,6 +325,7 @@ class MainFrame(wx.Frame):
         self.file.track_times = False
         self.file.track_tree_state = False
         self.file.selected_item = None
+        self.file.password = None
         self.populate_tree(self.file)
         
     def update_current_node_text(self):

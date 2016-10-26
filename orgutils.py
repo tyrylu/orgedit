@@ -1,5 +1,6 @@
 import time
 import PyOrgMode
+import sodium_utils
 
 def set_org_text(node, text):
     text_lst = [item + "\n" for item in text.split("\n")]
@@ -61,8 +62,8 @@ def set_file_flags_on(file, flags):
             file.track_tree_state = True
         elif flag.startswith("selected_item="):
             file.selected_item = flag.split("=")[1]
-    elif flag == "org_encrypted":
-        file.password = "something" # We'll ask anyway
+        elif flag == "org_encrypted":
+            file.password = "something" # We'll ask anyway
     # Now the defaults
     if not hasattr(file, "track_times"): file.track_times = False
     if not hasattr(file, "track_tree_state"): file.track_tree_state = False
@@ -78,10 +79,16 @@ def save_file(file, path):
         flags.append("track_tree_state")
     if file.selected_item:
         flags.append("selected_item=%s"%file.selected_item)
+    if file.password:
+        flags.append("org_encrypted")
+    orig_content = file.root.content
+    if file.password:
+        text = str(file.root)
+        print(repr(text))
+        file.root.content = [str(sodium_utils.encrypt(text, file.password), "ascii")]
     if flags:
-        flags.insert(0, "#FLAGS:")
+        flags.insert(0, "#FLAGS")
         file.root.content.insert(0, " ".join(flags) + "\n")
     file.save_to_file(path)
-    if flags:
-        del file.root.content[0] # We don't need them there
+    file.root.content = orig_content
     file.modified = False
