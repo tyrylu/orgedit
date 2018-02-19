@@ -311,8 +311,8 @@ class MainFrame(wx.Frame):
                     self.file.root.content = []
                     self.file.load_from_string(data)
                     has_password = True
-                except ValueError:
-                    wx.MessageBox(_("The provided password is invalid."), _("Error"), style=wx.ICON_ERROR)
+                except ValueError as exc:
+                    wx.MessageBox(_("The provided password is invalid.") + " " + str(exc), _("Error"), style=wx.ICON_ERROR)
         self.populate_tree(self.file)
         if self.file.selected_item:
             last = self.get_item_by_path(self.file.selected_item)
