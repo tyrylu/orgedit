@@ -27,6 +27,9 @@ class MainFrame(wx.Frame):
             self.file.modified = True
         node = self.FindWindowByName("tree").GetItemData(item)
         lines = [i for i in node.content if isinstance(i, str)] # It ends with a new line anyway, see the modification in PyOrgMode.py.
+        if lines:
+            # Drop the last newline, it just separates the rest of the structure from the text of this node
+            lines[-1] = lines[-1][:-1]
         text = "".join(lines)
         txt.Value = text
         self.prev_node = node
